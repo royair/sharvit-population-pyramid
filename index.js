@@ -1,9 +1,11 @@
-const ages     = generateAgeArray(10);
+const ages     = generateAgeArray(1000);
 const pyramid1 = toPyramid(ages);
-const pyramid2 = toPyramidWithReduce(ages);
+const pyramid2 = toPyramidWithReduce1(ages);
+const pyramid3 = toPyramidWithReduce2(ages);
 
 console.log(above20(pyramid1));
 console.log(above20(pyramid2));
+console.log(above20(pyramid3));
 
 function toPyramid(arr) {
   let pyramid = {};
@@ -25,7 +27,7 @@ function toPyramid(arr) {
   return pyramid;
 }
 
-function toPyramidWithReduce(arr) {
+function toPyramidWithReduce1(arr) {
   let pyramid = {};
 
   for (let i = 0; i <= 120; i += 5) {
@@ -44,6 +46,24 @@ function toPyramidWithReduce(arr) {
   }
 
   return pyramid;
+}
+
+function toPyramidWithReduce2(arr) {
+  return arr.reduce((acc, cur) => {
+    const { gender, age } = cur;
+    const group = Math.floor(age / 5) * 5;
+
+    // init pyramid's group of age
+    acc[group] = acc[group] || {};
+
+    //init array by gender in group of age
+    acc[group][gender] = acc[group][gender] || [];
+
+    //push a person to its place
+    acc[group][gender].push(cur);
+
+    return acc;
+  }, {});
 }
 
 function above20(pyramid) {
